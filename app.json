@@ -2,10 +2,11 @@
   "expo": {
     "name": "Teach_Web",
     "slug": "Teach_Web",
+    "scheme": "tlhacademy",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash-icon.png",
@@ -24,6 +25,10 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-router",
+      "expo-web-browser"
+    ]
   }
 }

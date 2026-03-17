@@ -1,7 +1,7 @@
 {
   "name": "teach_web",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -9,10 +9,27 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "2.2.0",
+    "axios": "^1.13.6",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
     "expo": "~54.0.33",
+    "expo-auth-session": "~7.0.10",
+    "expo-file-system": "~19.0.21",
+    "expo-router": "~6.0.23",
+    "expo-sharing": "~14.0.8",
     "expo-status-bar": "~3.0.9",
+    "expo-web-browser": "~15.0.10",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.3.0",
     "react": "19.1.0",
-    "react-native": "0.81.5"
+    "react-dom": "19.1.0",
+    "react-native": "0.81.5",
+    "react-native-qrcode-svg": "^6.3.21",
+    "react-native-svg": "15.12.1",
+    "react-native-web": "^0.21.0"
   },
   "private": true
 }
