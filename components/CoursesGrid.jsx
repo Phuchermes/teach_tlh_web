@@ -8,7 +8,11 @@ const courses = [
     img: require("../img/class/IMG_3859.png"),
   },
   {
-    title: "THPT English",
+    title: "Tiếng Anh THCS",
+    img: require("../img/class/IMG_3853.png"),
+  },
+  {
+    title: "Tiếng Anh THPT",
     img: require("../img/class/IMG_3853.png"),
   },
   {

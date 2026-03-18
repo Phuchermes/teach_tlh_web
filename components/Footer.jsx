@@ -39,8 +39,11 @@ export default function Footer() {
 
           <ThemedText>
             TEACH WITH CARE - LEARN WITH MIND
-            Chúng tôi giúp học sinh đạt mục tiêu học tập.
           </ThemedText>
+
+            <ThemedText>
+                Chúng tôi giúp học sinh đạt mục tiêu học tập.
+            </ThemedText>
         </ThemedView>
 
         {/* COURSES */}
