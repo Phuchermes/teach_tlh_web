@@ -38,7 +38,7 @@ export default function Footer() {
           </ThemedText>
 
           <ThemedText>
-            Teach with heart, learn with mind.
+            TEACH WITH CARE - LEARN WITH MIND
             Chúng tôi giúp học sinh đạt mục tiêu học tập.
           </ThemedText>
         </ThemedView>
@@ -49,9 +49,10 @@ export default function Footer() {
             Courses
           </ThemedText>
 
-          <FooterLink text="TOEIC" />
-          <FooterLink text="THPT English" />
-          <FooterLink text="Luyện thi ĐH" />
+          <FooterLink text="LUYỆN THI THPTQG - TUYỂN SINH 10 " />
+          <FooterLink text="LUYỆN THI CHỨNG CHỈ TOEIC - CAMBRIDGE " />
+          <FooterLink text="TIẾNG ANH PHỔ THÔNG 6 - 12" />
+            <FooterLink text="TIẾNG ANH GIAO TIẾP" />
         </ThemedView>
 
         {/* COMPANY */}

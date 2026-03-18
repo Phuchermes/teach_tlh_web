@@ -42,7 +42,7 @@ export default function Hero() {
               textAlign: isMobile ? "center" : "left",
             }}
           >
-            Teach with heart
+            TEACH WITH CARE
           </ThemedText>
 
           <ThemedText
@@ -53,7 +53,7 @@ export default function Hero() {
               textAlign: isMobile ? "center" : "left",
             }}
           >
-            Learn with mind
+            LEARN WITH MIND
           </ThemedText>
 
           <ThemedText
@@ -64,8 +64,7 @@ export default function Hero() {
               textAlign: isMobile ? "center" : "left",
             }}
           >
-            Phương pháp học logic giúp học sinh
-            tăng điểm TOEIC và thi đại học.
+             Cam kết chương trình học ĐÚNG TRỌNG TÂM - LUÔN ĐỔI MỚI - VỮNG ĐẦU RA
           </ThemedText>
 
           <ThemedView style={{ height: 30 }} />
