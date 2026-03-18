@@ -31,7 +31,9 @@ const [socialLoading, setSocialLoading] = useState(false);
 GOOGLE AUTH
 ====================== */
 
-const redirectUri = makeRedirectUri();
+const redirectUri = makeRedirectUri({
+  scheme: "https",
+});
 
 const [request,response,promptAsync] =
 Google.useAuthRequest({
@@ -287,13 +289,13 @@ Quên mật khẩu?
 
 <OAuthButton
 title={socialLoading ? "Đang xử lý..." : "Continue with Google"}
-onPress={()=>promptAsync()}
+onPress={()=>promptAsync({ useProxy: true })}
 disabled={socialLoading}
 />
 
 <OAuthButton
 title={socialLoading ? "Đang xử lý..." : "Continue with Facebook"}
-onPress={()=>fbPromptAsync()}
+onPress={()=>fbPromptAsync({ useProxy: true })}
 disabled={socialLoading}
 />
 
