@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
@@ -27,7 +27,7 @@ export default function SignInScreen() {
   const [socialLoading, setSocialLoading] = useState(false);
 
   /* ======================
-     REDIRECT URI (FIX CHUẨN WEB)
+     REDIRECT URI
   ====================== */
 
   const redirectUri = makeRedirectUri({
@@ -38,7 +38,7 @@ export default function SignInScreen() {
      GOOGLE AUTH
   ====================== */
 
-  const [request, response, promptAsync] =
+  const [request, , promptAsync] =
     Google.useAuthRequest({
       webClientId:
         "303218003640-go1576tj0b23m432qdrqavhcuemqjao8.apps.googleusercontent.com",
@@ -54,7 +54,7 @@ export default function SignInScreen() {
      FACEBOOK AUTH
   ====================== */
 
-  const [fbRequest, fbResponse, fbPromptAsync] =
+  const [fbRequest, , fbPromptAsync] =
     Facebook.useAuthRequest({
       clientId: "2391880657993636",
       scopes: ["public_profile", "email"],
@@ -62,97 +62,101 @@ export default function SignInScreen() {
     });
 
   /* ======================
-     GOOGLE RESPONSE
+     GOOGLE LOGIN (FIX CHUẨN)
   ====================== */
 
-  useEffect(() => {
-    if (response?.type === "success") {
-      (async () => {
-        try {
-          setSocialLoading(true);
+  const handleGoogleLogin = async () => {
+    try {
+      setSocialLoading(true);
 
-          const token = response.authentication.accessToken;
+      const result = await promptAsync({
+        useProxy: false,
+      });
 
-          const userRes = await fetch(
-            "https://www.googleapis.com/oauth2/v2/userinfo",
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            }
-          );
+      if (result.type !== "success") return;
 
-          const userInfo = await userRes.json();
+      const token = result.authentication.accessToken;
 
-          /* ✅ CHỈ GỌI LOGIN (KHÔNG GỌI API TRƯỚC) */
-          const res = await login({
-            provider: "google",
-            email: userInfo.email,
-            name: userInfo.name,
-            avatar: userInfo.picture,
-          });
-
-          if (res.success) {
-            router.replace("/");
-          } else {
-            alert(res.message);
-          }
-
-        } catch (err) {
-          console.log(err);
-          alert("Google login failed");
-        } finally {
-          setSocialLoading(false);
+      const userRes = await fetch(
+        "https://www.googleapis.com/oauth2/v2/userinfo",
+        {
+          headers: { Authorization: `Bearer ${token}` },
         }
-      })();
+      );
+
+      const userInfo = await userRes.json();
+
+      const res = await login({
+        provider: "google",
+        email: userInfo.email,
+        name: userInfo.name,
+        avatar: userInfo.picture,
+      });
+
+      if (res.success) {
+        router.replace("/");
+      } else {
+        alert(res.message);
+      }
+
+    } catch (err) {
+      console.log(err);
+      alert("Google login failed");
+    } finally {
+      setSocialLoading(false);
     }
-  }, [response]);
+  };
 
   /* ======================
-     FACEBOOK RESPONSE
+     FACEBOOK LOGIN (FIX CHUẨN)
   ====================== */
 
-  useEffect(() => {
-    if (fbResponse?.type === "success") {
-      (async () => {
-        try {
-          setSocialLoading(true);
+  const handleFacebookLogin = async () => {
+    try {
+      setSocialLoading(true);
 
-          const token = fbResponse.authentication.accessToken;
+      const result = await fbPromptAsync({
+        useProxy: false,
+      });
 
-          const userRes = await fetch(
-            `https://graph.facebook.com/me?fields=id,name,email,picture&access_token=${token}`
-          );
+      if (result.type !== "success") return;
 
-          const userInfo = await userRes.json();
+      const token = result.authentication.accessToken;
 
-          const res = await login({
-            provider: "facebook",
-            email: userInfo.email,
-            name: userInfo.name,
-            avatar: userInfo.picture?.data?.url,
-            id: userInfo.id,
-          });
+      const userRes = await fetch(
+        `https://graph.facebook.com/me?fields=id,name,email,picture&access_token=${token}`
+      );
 
-          if (res.success) {
-            router.replace("/");
-          } else {
-            alert(res.message);
-          }
+      const userInfo = await userRes.json();
 
-        } catch (err) {
-          console.log(err);
-          alert("Facebook login failed");
-        } finally {
-          setSocialLoading(false);
-        }
-      })();
+      const res = await login({
+        provider: "facebook",
+        email: userInfo.email,
+        name: userInfo.name,
+        avatar: userInfo.picture?.data?.url,
+        id: userInfo.id,
+      });
+
+      if (res.success) {
+        router.replace("/");
+      } else {
+        alert(res.message);
+      }
+
+    } catch (err) {
+      console.log(err);
+      alert("Facebook login failed");
+    } finally {
+      setSocialLoading(false);
     }
-  }, [fbResponse]);
+  };
 
   /* ======================
      LOGIN NORMAL
   ====================== */
 
   async function handleLogin() {
+
     if (!phone || !password) {
       alert("Vui lòng nhập đầy đủ thông tin");
       return;
@@ -193,6 +197,7 @@ export default function SignInScreen() {
       }}
     >
       <ThemedView style={{ width: "100%", maxWidth: 420 }}>
+
         <ThemedText
           style={{
             fontSize: 32,
@@ -237,17 +242,20 @@ export default function SignInScreen() {
 
         <OAuthButton
           title={socialLoading ? "Đang xử lý..." : "Continue with Google"}
-          onPress={() => promptAsync({ useProxy: false, preferEphemeralSession: false })}
+          onPress={handleGoogleLogin}
           disabled={socialLoading}
+          type="google"
         />
 
         <OAuthButton
           title={socialLoading ? "Đang xử lý..." : "Continue with Facebook"}
-          onPress={() => fbPromptAsync({ useProxy: false, preferEphemeralSession: false })}
+          onPress={handleFacebookLogin}
           disabled={socialLoading}
+          type="facebook"
         />
 
         <AuthFooter router={router} />
+
       </ThemedView>
     </ThemedView>
   );
@@ -284,20 +292,50 @@ function Divider() {
   );
 }
 
-function OAuthButton({ title, onPress, disabled }) {
+function OAuthButton({ title, onPress, disabled, type }) {
+
+  const isGoogle = type === "google";
+  const isFacebook = type === "facebook";
+
+  const backgroundColor =
+    isGoogle ? "#fff" :
+    isFacebook ? "#1877F2" :
+    "#f5f5f5";
+
+  const textColor =
+    isGoogle ? "#222" :
+    isFacebook ? "#fff" :
+    "#222";
+
   return (
     <TouchableOpacity
       onPress={onPress}
       disabled={disabled}
       style={{
-        padding: 13,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        paddingVertical: 13,
         borderRadius: 8,
         borderWidth: 1,
+        borderColor: "#ddd",
+        backgroundColor,
         marginBottom: 12,
         opacity: disabled ? 0.6 : 1,
       }}
     >
-      <ThemedText>{title}</ThemedText>
+      {isGoogle && <AntDesign name="google" size={18} color="#DB4437" />}
+      {isFacebook && <FontAwesome name="facebook" size={18} color="#fff" />}
+
+      <ThemedText
+        style={{
+          color: textColor,
+          fontWeight: "500",
+          marginLeft: 10,
+        }}
+      >
+        {title}
+      </ThemedText>
     </TouchableOpacity>
   );
 }
@@ -305,9 +343,15 @@ function OAuthButton({ title, onPress, disabled }) {
 function AuthFooter({ router }) {
   return (
     <ThemedView style={{ flexDirection: "row", justifyContent: "center", marginTop: 20 }}>
-      <ThemedText>Chưa có tài khoản?</ThemedText>
-      <TouchableOpacity onPress={() => router.replace("/register")}>
-        <ThemedText style={{ color: "#c09808", marginLeft: 6 }}>
+      <ThemedText style={{ opacity: 0.7 }}>
+        Chưa có tài khoản?
+      </ThemedText>
+
+      <TouchableOpacity
+        onPress={() => router.replace("/register")}
+        style={{ marginLeft: 6 }}
+      >
+        <ThemedText style={{ color: "#c09808", fontWeight: "600" }}>
           Sign Up
         </ThemedText>
       </TouchableOpacity>
