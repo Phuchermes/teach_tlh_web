@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, useWindowDimensions } from "react-native";
 import ThemedView from "./ThemedView";
 import ThemedText from "./ThemedText";
 
@@ -38,74 +38,66 @@ a:"Lớp học linh hoạt: OFFLINE - ONLINE - KÈM NHÓM NHỎ hoặc 1:1."
 COMPONENT
 ====================== */
 
-export default function FAQ(){
+export default function FAQ() {
+  const [open, setOpen] = useState(null);
+  const { width } = useWindowDimensions();
 
-const [open,setOpen]=useState(null);
+  const isMobile = width < 768;
 
-return(
+  return (
+    <ThemedView
+      style={{
+        width: "100%",
+        alignItems: "center",
+        paddingVertical: isMobile ? 60 : 100,
+        paddingHorizontal: 20,
+      }}
+    >
+      <ThemedText
+        style={{
+          fontSize: 28,
+          fontWeight: "bold",
+          marginBottom: 40,
+          textAlign: "center",
+        }}
+      >
+        Tại sao chọn LTH
+      </ThemedText>
 
-<ThemedView
-style={{
-width:"100%",
-alignItems:"center",
-paddingVertical:100
-}}
->
+      <View
+        style={{
+          width: "100%",
+          maxWidth: 700,
+        }}
+      >
+        {faqs.map((f, i) => (
+          <TouchableOpacity
+            key={i}
+            onPress={() => setOpen(open === i ? null : i)}
+            style={{
+              paddingVertical: 18,
+              borderBottomWidth: 1,
+              borderColor: "#333",
+            }}
+          >
+            <ThemedText style={{ fontWeight: "bold" }}>
+              {f.q}
+            </ThemedText>
 
-<ThemedText
-style={{
-fontSize:28,
-fontWeight:"bold",
-marginBottom:40
-}}
->
-Tại sao chọn LTH
-</ThemedText>
-
-<View style={{width:700,maxWidth:"90%"}}>
-
-{faqs.map((f,i)=>(
-
-<TouchableOpacity
-key={i}
-onPress={()=>setOpen(open===i?null:i)}
-style={{
-paddingVertical:18,
-borderBottomWidth:1,
-borderColor:"#333"
-}}
->
-
-<ThemedText
-style={{
-fontWeight:"bold"
-}}
->
-{f.q}
-</ThemedText>
-
-{open===i &&(
-
-<ThemedText
-style={{
-marginTop:10,
-opacity:0.7,
-lineHeight:22
-}}
->
-{f.a}
-</ThemedText>
-
-)}
-
-</TouchableOpacity>
-
-))}
-
-</View>
-
-</ThemedView>
-
-)
-
+            {open === i && (
+              <ThemedText
+                style={{
+                  marginTop: 10,
+                  opacity: 0.7,
+                  lineHeight: 22,
+                }}
+              >
+                {f.a}
+              </ThemedText>
+            )}
+          </TouchableOpacity>
+        ))}
+      </View>
+    </ThemedView>
+  );
 }

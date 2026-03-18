@@ -5,7 +5,7 @@ import ThemedText from "../../components/ThemedText";
 import ThemedTextInput from "../../components/ThemedTextInput";
 import { useRouter } from "expo-router";
 
-import { useAuth } from "../../contexts/AuthContext"; // thêm
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function SignUpScreen(){
 
@@ -13,25 +13,55 @@ const [phone,setPhone]=useState("");
 const [name,setName]=useState("");
 const [password,setPassword]=useState("");
 
-const { register } = useAuth(); // thêm
+const [loading,setLoading] = useState(false);
 
+const { register } = useAuth();
 const router = useRouter();
+
+/* ======================
+REGISTER
+====================== */
 
 async function handleRegister(){
 
+if(!name || !phone || !password){
+alert("Vui lòng nhập đầy đủ thông tin");
+return;
+}
+
+if(password.length < 6){
+alert("Mật khẩu tối thiểu 6 ký tự");
+return;
+}
+
+try{
+
+setLoading(true);
+
 const res = await register({
-phone: phone, // sửa phone → email
-name: name,
-password: password
+phone,
+name,
+password
 });
 
 if(res.success){
+alert("Đăng ký thành công");
 router.replace("/login");
 }else{
-alert(res.message)
+alert(res.message);
+}
+
+}catch(err){
+alert("Lỗi đăng ký");
+}finally{
+setLoading(false);
 }
 
 }
+
+/* ======================
+UI
+====================== */
 
 return(
 
@@ -77,17 +107,19 @@ onChangeText={setPassword}
 
 <TouchableOpacity
 onPress={handleRegister}
+disabled={loading}
 style={{
 backgroundColor:"#c09808",
 paddingVertical:14,
 borderRadius:8,
 alignItems:"center",
-marginTop:10
+marginTop:10,
+opacity: loading ? 0.7 : 1
 }}
 >
 
 <ThemedText style={{color:"#fff",fontWeight:"600"}}>
-Đăng Ký
+{loading ? "Đang xử lý..." : "Đăng Ký"}
 </ThemedText>
 
 </TouchableOpacity>
@@ -101,6 +133,10 @@ marginTop:10
 )
 
 }
+
+/* ======================
+INPUT
+====================== */
 
 function Input({placeholder,value,onChangeText,secure}){
 
@@ -124,6 +160,10 @@ fontSize:16
 )
 
 }
+
+/* ======================
+FOOTER
+====================== */
 
 function AuthFooter({router}){
 

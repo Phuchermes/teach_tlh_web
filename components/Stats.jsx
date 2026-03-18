@@ -1,75 +1,82 @@
+import { useWindowDimensions } from "react-native";
 import ThemedView from "./ThemedView";
 import ThemedText from "./ThemedText";
 
-export default function Stats(){
+export default function Stats() {
 
-return(
+  const { width } = useWindowDimensions();
+  const isMobile = width < 768;
 
-<ThemedView
-style={{
-width:"100%",
-alignItems:"center",
-paddingVertical:80
-}}
->
+  return (
 
-<ThemedView
-style={{
-flexDirection:"row",
-flexWrap:"wrap",
-gap:60,
-justifyContent:"center",
-maxWidth:1200
-}}
->
+    <ThemedView
+      style={{
+        width: "100%",
+        alignItems: "center",
+        paddingVertical: isMobile ? 50 : 80
+      }}
+    >
 
-<Stat number="1000+" label="HỌC VIÊN"/>
+      <ThemedView
+        style={{
+          flexDirection: "row",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          maxWidth: 1200,
+          width: "100%",
+          gap: isMobile ? 30 : 60
+        }}
+      >
 
-<Stat number="+5" label="KN GIẢNG DẠY"/>
+        <Stat number="1000+" label="HỌC VIÊN" isMobile={isMobile}/>
+        <Stat number="+5" label="KN GIẢNG DẠY" isMobile={isMobile}/>
+        <Stat number="800+" label="HỌC VIÊN ĐẠT 8+, 9+" isMobile={isMobile}/>
+        <Stat number="100+" label="HỌC VIÊN DƯỚI TB LÊN 6+, 7+" isMobile={isMobile}/>
+        <Stat number="95%" label="HỌC VIÊN TOEIC ĐẠT TARGET" isMobile={isMobile}/>
 
-<Stat number="800+" label="HỌC VIÊN ĐẠT 8+, 9+"/>
+      </ThemedView>
 
-<Stat number="100+" label="HỌC VIÊN DƯỚI TB LÊN 6+, 7+"/>
+    </ThemedView>
 
-<Stat number="95%" label="HỌC VIÊN TOEIC ĐẠT TARGET"/>
-
-
-
-</ThemedView>
-
-</ThemedView>
-
-)
-
+  );
 }
 
-function Stat({number,label}){
+/* ======================
+STAT ITEM
+====================== */
 
-return(
+function Stat({ number, label, isMobile }) {
 
-<ThemedView style={{alignItems:"center"}}>
+  return (
 
-<ThemedText
-style={{
-fontSize:34,
-fontWeight:"bold"
-}}
->
-{number}
-</ThemedText>
+    <ThemedView
+      style={{
+        alignItems: "center",
+        minWidth: isMobile ? "40%" : 160
+      }}
+    >
 
-<ThemedText
-style={{
-opacity:0.7,
-marginTop:6
-}}
->
-{label}
-</ThemedText>
+      <ThemedText
+        style={{
+          fontSize: isMobile ? 26 : 34,
+          fontWeight: "bold"
+        }}
+      >
+        {number}
+      </ThemedText>
 
-</ThemedView>
+      <ThemedText
+        style={{
+          opacity: 0.7,
+          marginTop: 6,
+          textAlign: "center",
+          fontSize: isMobile ? 13 : 14
+        }}
+      >
+        {label}
+      </ThemedText>
 
-)
+    </ThemedView>
 
+  );
 }
-

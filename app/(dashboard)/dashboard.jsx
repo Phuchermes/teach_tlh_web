@@ -1,6 +1,6 @@
 import { ScrollView } from "react-native";
 import ThemedView from "../../components/ThemedView";
-
+import TrustBar from "../../components/TrustBar";
 import Navbar from "../../components/Navbar";
 import Hero from "../../components/Hero";
 import Stats from "../../components/Stats";
@@ -27,7 +27,7 @@ showsVerticalScrollIndicator={false}
 
 <Hero/>
 
-{/* <TrustBar/> */}
+<TrustBar/>
 
 <Stats/>
 

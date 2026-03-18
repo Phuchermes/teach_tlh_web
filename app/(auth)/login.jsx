@@ -15,6 +15,9 @@ import { useAuth } from "../../contexts/AuthContext";
 
 WebBrowser.maybeCompleteAuthSession();
 
+/* 🔥 IMPORTANT */
+const API_URL = "http://100.113.47.2:3000"; // đổi khi deploy
+
 export default function SignInScreen(){
 
 const router = useRouter();
@@ -23,7 +26,12 @@ const {login} = useAuth();
 const [phone, setPhone] = useState("");
 const [password,setPassword] = useState("");
 
-/* GOOGLE AUTH */
+const [loading, setLoading] = useState(false);
+const [socialLoading, setSocialLoading] = useState(false);
+
+/* ======================
+GOOGLE AUTH
+====================== */
 
 const redirectUri = makeRedirectUri();
 
@@ -44,6 +52,10 @@ select_account:true
 
 });
 
+/* ======================
+FACEBOOK AUTH
+====================== */
+
 const [fbRequest, fbResponse, fbPromptAsync] =
 Facebook.useAuthRequest({
 
@@ -53,66 +65,88 @@ redirectUri
 
 });
 
-/* HANDLE GOOGLE RESPONSE */
+/* ======================
+GOOGLE RESPONSE
+====================== */
 
 useEffect(()=>{
 
 if(response?.type === "success"){
 
+(async()=>{
+
+try{
+
+setSocialLoading(true);
+
 const token = response.authentication.accessToken;
 
-fetch("https://www.googleapis.com/oauth2/v2/userinfo",{
-headers:{
-Authorization:`Bearer ${token}`
+const userRes = await fetch(
+"https://www.googleapis.com/oauth2/v2/userinfo",
+{
+headers:{ Authorization:`Bearer ${token}` }
 }
-})
-.then(res=>res.json())
-.then(async userInfo=>{
+);
 
-const res = await fetch("http://100.113.47.2:3000/api/auth/social-login",{
+const userInfo = await userRes.json();
+
+await fetch(`${API_URL}/api/auth/social-login`,{
 method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
+headers:{ "Content-Type":"application/json" },
 body:JSON.stringify({
 name:userInfo.name,
 email:userInfo.email,
 avatar:userInfo.picture,
 provider:"google"
 })
-})
-
-const data = await res.json()
+});
 
 await login({
-provider: "google",
-email: userInfo.email,
-name: userInfo.name,
-avatar: userInfo.picture
-})
-router.replace("/")
+provider:"google",
+email:userInfo.email,
+name:userInfo.name,
+avatar:userInfo.picture
+});
 
-})
+router.replace("/");
+
+}catch(err){
+alert("Google login failed");
+}finally{
+setSocialLoading(false);
+}
+
+})();
 
 }
 
 },[response]);
 
+/* ======================
+FACEBOOK RESPONSE
+====================== */
+
 useEffect(()=>{
 
 if(fbResponse?.type === "success"){
 
+(async()=>{
+
+try{
+
+setSocialLoading(true);
+
 const token = fbResponse.authentication.accessToken;
 
-fetch(`https://graph.facebook.com/me?fields=id,name,email,picture&access_token=${token}`)
-.then(res=>res.json())
-.then(async userInfo=>{
+const userRes = await fetch(
+`https://graph.facebook.com/me?fields=id,name,email,picture&access_token=${token}`
+);
 
-const res = await fetch("http://100.113.47.2:3000/api/auth/social-login",{
+const userInfo = await userRes.json();
+
+await fetch(`${API_URL}/api/auth/social-login`,{
 method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
+headers:{ "Content-Type":"application/json" },
 body:JSON.stringify({
 name:userInfo.name,
 email:userInfo.email,
@@ -120,9 +154,7 @@ avatar:userInfo.picture?.data?.url,
 provider:"facebook",
 id:userInfo.id
 })
-})
-
-const data = await res.json()
+});
 
 await login({
 name:userInfo.name,
@@ -130,15 +162,25 @@ email:userInfo.email,
 avatar:userInfo.picture?.data?.url,
 provider:"facebook",
 id:userInfo.id
-})
+});
 
-router.replace("/")
+router.replace("/");
 
-})
+}catch(err){
+alert("Facebook login failed");
+}finally{
+setSocialLoading(false);
+}
+
+})();
 
 }
 
 },[fbResponse]);
+
+/* ======================
+LOGIN NORMAL
+====================== */
 
 async function handleLogin(){
 
@@ -147,9 +189,13 @@ alert("Vui lòng nhập đầy đủ thông tin");
 return;
 }
 
+try{
+
+setLoading(true);
+
 const res = await login({
-phone: phone,
-password: password
+phone,
+password
 });
 
 if(res.success){
@@ -158,7 +204,17 @@ router.replace("/");
 alert(res.message);
 }
 
+}catch(err){
+alert("Lỗi đăng nhập");
+}finally{
+setLoading(false);
 }
+
+}
+
+/* ======================
+UI
+====================== */
 
 return(
 
@@ -198,17 +254,19 @@ onChangeText={setPassword}
 
 <TouchableOpacity
 onPress={handleLogin}
+disabled={loading}
 style={{
 backgroundColor:"#c09808",
 paddingVertical:14,
 borderRadius:8,
 alignItems:"center",
-marginBottom:20
+marginBottom:20,
+opacity: loading ? 0.7 : 1
 }}
 >
 
 <ThemedText style={{color:"#fff",fontWeight:"600"}}>
-Đăng Nhập
+{loading ? "Đang đăng nhập..." : "Đăng Nhập"}
 </ThemedText>
 
 </TouchableOpacity>
@@ -230,13 +288,15 @@ Quên mật khẩu?
 <Divider/>
 
 <OAuthButton
-title="Continue with Google"
+title={socialLoading ? "Đang xử lý..." : "Continue with Google"}
 onPress={()=>promptAsync()}
+disabled={socialLoading}
 />
 
 <OAuthButton
-title="Continue with Facebook"
+title={socialLoading ? "Đang xử lý..." : "Continue with Facebook"}
 onPress={()=>fbPromptAsync()}
+disabled={socialLoading}
 />
 
 <AuthFooter router={router}/>
@@ -249,7 +309,9 @@ onPress={()=>fbPromptAsync()}
 
 }
 
-/* INPUT */
+/* ======================
+INPUT
+====================== */
 
 function Input({placeholder,value,onChangeText,secure}){
 
@@ -274,7 +336,9 @@ fontSize:16
 
 }
 
-/* DIVIDER */
+/* ======================
+DIVIDER
+====================== */
 
 function Divider(){
 
@@ -302,9 +366,11 @@ OR
 
 }
 
-/* OAUTH BUTTON */
+/* ======================
+OAUTH BUTTON
+====================== */
 
-function OAuthButton({title,onPress}){
+function OAuthButton({title,onPress,disabled}){
 
 const isGoogle = title.includes("Google");
 const isFacebook = title.includes("Facebook");
@@ -328,6 +394,7 @@ return(
 
 <TouchableOpacity
 onPress={onPress}
+disabled={disabled}
 style={{
 flexDirection:"row",
 alignItems:"center",
@@ -337,7 +404,8 @@ borderRadius:8,
 borderWidth:1,
 borderColor:borderColor,
 backgroundColor:backgroundColor,
-marginBottom:12
+marginBottom:12,
+opacity: disabled ? 0.6 : 1
 }}
 >
 
@@ -359,31 +427,31 @@ marginLeft:10
 
 }
 
+/* ======================
+ICON
+====================== */
+
 function Icon({type}){
 
 if(type==="google"){
 return(
-<AntDesign
-name="google"
-size={18}
-color="#DB4437"
-/>
+<AntDesign name="google" size={18} color="#DB4437"/>
 )
 }
 
 if(type==="facebook"){
 return(
-<FontAwesome
-name="facebook"
-size={18}
-color="#fff"
-/>
+<FontAwesome name="facebook" size={18} color="#fff"/>
 )
 }
 
 return null
 
 }
+
+/* ======================
+FOOTER
+====================== */
 
 function AuthFooter({router}){
 

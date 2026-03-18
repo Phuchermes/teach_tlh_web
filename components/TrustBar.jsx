@@ -1,65 +1,76 @@
-import { View } from "react-native";
+import { useWindowDimensions } from "react-native";
 import ThemedView from "./ThemedView";
 import ThemedText from "./ThemedText";
 
-export default function TrustBar(){
+export default function TrustBar() {
 
-return(
+  const { width } = useWindowDimensions();
+  const isMobile = width < 768;
 
-<ThemedView
-style={{
-width:"100%",
-alignItems:"center",
-paddingVertical:40
-}}
->
+  return (
 
-<ThemedView
-style={{
-flexDirection:"row",
-flexWrap:"wrap",
-gap:40,
-justifyContent:"center",
-maxWidth:1440
-}}
->
+    <ThemedView
+      style={{
+        width: "100%",
+        alignItems: "center",
+        paddingVertical: isMobile ? 30 : 40
+      }}
+    >
 
-<Item text="⭐ 100+ học sinh"/>
+      <ThemedView
+        style={{
+          flexDirection: "row",
+          flexWrap: "wrap",
+          gap: isMobile ? 16 : 40,
+          justifyContent: "center",
+          maxWidth: 1200,
+          width: "100%"
+        }}
+      >
 
-<Item text="⭐ 5 năm giảng dạy"/>
+        <Item text="1000+ Học Viên" isMobile={isMobile}/>
+        <Item text="5 Năm KN Giảng Dạy" isMobile={isMobile}/>
+        <Item text="800+ Học viên Đạt Target" isMobile={isMobile}/>
+        <Item text="95% Học Viên TOEIC Đạt Target" isMobile={isMobile}/>
 
-<Item text="⭐ TOEIC 900+"/>
+      </ThemedView>
 
-<Item text="⭐ 95% đậu đại học"/>
+    </ThemedView>
 
-</ThemedView>
-
-</ThemedView>
-
-)
-
+  );
 }
 
-function Item({text}){
+/* ======================
+ITEM
+====================== */
 
-return(
+function Item({ text, isMobile }) {
 
-<ThemedView
-style={{
-paddingHorizontal:20,
-paddingVertical:10,
-borderRadius:8,
-// backgroundColor:"#2a2a3c"
-}}
->
+  return (
 
-<ThemedText style={{fontSize:15}}>
-{text}
-</ThemedText>
+    <ThemedView
+      style={{
+        paddingHorizontal: isMobile ? 14 : 20,
+        paddingVertical: isMobile ? 8 : 10,
+        borderRadius: 999,
 
-</ThemedView>
+        // 💥 làm nổi bật
+        backgroundColor: "rgba(255,255,255,0.05)",
+        borderWidth: 1,
+        borderColor: "rgba(255,255,255,0.08)"
+      }}
+    >
 
-)
+      <ThemedText
+        style={{
+          fontSize: isMobile ? 13 : 15,
+          fontWeight: "500"
+        }}
+      >
+        ⭐ {text}
+      </ThemedText>
 
+    </ThemedView>
+
+  );
 }
-
