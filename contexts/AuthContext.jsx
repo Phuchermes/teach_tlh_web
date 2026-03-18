@@ -8,7 +8,8 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
 
-  const [user, setUser] = useState(null);
+const [user, setUser] = useState(null);
+const [loading, setLoading] = useState(true); // 🔥 thêm
 
   /* ======================
      STORAGE HELPER (web + mobile)
@@ -40,28 +41,29 @@ export function AuthProvider({ children }) {
   /* ======================
      LOAD USER
   ====================== */
+useEffect(() => {
+  async function loadUser() {
+    try {
+      const savedUser = await storage.get("user");
+      const token = await storage.get("token");
 
-  useEffect(() => {
-    async function loadUser() {
-      try {
-        const savedUser = await storage.get("user");
-        const token = await storage.get("token");
-
-        if (savedUser) {
-          setUser(JSON.parse(savedUser));
-        }
-
-        if (token) {
-          axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-        }
-
-      } catch (err) {
-        console.log(err);
+      if (savedUser) {
+        setUser(JSON.parse(savedUser));
       }
-    }
 
-    loadUser();
-  }, []);
+      if (token) {
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      }
+
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false); // 🔥 QUAN TRỌNG
+    }
+  }
+
+  loadUser();
+}, []);
 
   /* ======================
      LOGIN
@@ -165,6 +167,7 @@ export function AuthProvider({ children }) {
     <AuthContext.Provider
       value={{
         user,
+        loading,
         login,
         register,
         logout
