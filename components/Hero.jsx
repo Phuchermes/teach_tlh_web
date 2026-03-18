@@ -84,7 +84,7 @@ export default function Hero() {
 
           <ThemedView style={{ marginTop: 20 }}>
             <ThemedText style={{ opacity: 0.6, textAlign: isMobile ? "center" : "left" }}>
-              ⭐ Hơn 100+ học sinh đã học tại TLH
+              ⭐ Hơn 1000+ học sinh đã học tại TLH
             </ThemedText>
           </ThemedView>
         </ThemedView>

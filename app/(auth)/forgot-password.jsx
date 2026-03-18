@@ -4,10 +4,8 @@ import { useRouter } from "expo-router";
 import ThemedView from "../../components/ThemedView";
 import ThemedText from "../../components/ThemedText";
 import ThemedTextInput from "../../components/ThemedTextInput";
-
+import API_URL from "../../config/api";
 import axios from "axios";
-
-const API_URL = "http://100.113.47.2:3000"; // 🔥 đổi khi deploy
 
 /* STYLE */
 

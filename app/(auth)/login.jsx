@@ -12,11 +12,9 @@ import ThemedText from "../../components/ThemedText";
 import ThemedTextInput from "../../components/ThemedTextInput";
 
 import { useAuth } from "../../contexts/AuthContext";
+import API_URL from "../../config/api";
 
 WebBrowser.maybeCompleteAuthSession();
-
-/* 🔥 IMPORTANT */
-const API_URL = "http://100.113.47.2:3000"; // đổi khi deploy
 
 export default function SignInScreen(){
 

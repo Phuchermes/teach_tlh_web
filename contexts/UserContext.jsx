@@ -1,14 +1,13 @@
 import { createContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import API_URL from "../config/api";
 
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [authChecked, setAuthChecked] = useState(false);
-
-  const API_URL = "http://100.113.47.2:3000";
 
   // ===== Load user từ AsyncStorage khi app/web khởi động =====
   useEffect(() => {
