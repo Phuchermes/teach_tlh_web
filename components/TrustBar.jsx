@@ -30,7 +30,7 @@ export default function TrustBar() {
 
         <Item text="1000+ Học Viên" isMobile={isMobile}/>
         {/* <Item text="5 Năm KN Giảng Dạy" isMobile={isMobile}/> */}
-        <Item text="800+ Học viên Đạt Target" isMobile={isMobile}/>
+        <Item text="800+ Học viên Đạt 8+, 9+" isMobile={isMobile}/>
         <Item text="95% Học Viên TOEIC Đạt Target" isMobile={isMobile}/>
 
       </ThemedView>
