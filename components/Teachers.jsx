@@ -5,7 +5,7 @@ import ThemedText from "./ThemedText";
 const teachers = [
   {
     name: "Ms Lan Hương",
-    score: "TOEIC 990+",
+    score: "TOEIC 990/990",
     info:
       "- Cử nhân Sư phạm Anh - ĐH Sư phạm TP.HCM\n- Thạc sĩ Ngôn ngữ Anh - ĐH Công nghệ TP.HCM",
     exp:
