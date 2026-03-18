@@ -29,7 +29,7 @@ export default function Stats() {
       >
 
         <Stat number="1000+" label="HỌC VIÊN" isMobile={isMobile}/>
-        <Stat number="+5" label="KN GIẢNG DẠY" isMobile={isMobile}/>
+        {/* <Stat number="+5" label="KN GIẢNG DẠY" isMobile={isMobile}/> */}
         <Stat number="800+" label="HỌC VIÊN ĐẠT 8+, 9+" isMobile={isMobile}/>
         <Stat number="100+" label="HỌC VIÊN DƯỚI TB LÊN 6+, 7+" isMobile={isMobile}/>
         <Stat number="95%" label="HỌC VIÊN TOEIC ĐẠT TARGET" isMobile={isMobile}/>
