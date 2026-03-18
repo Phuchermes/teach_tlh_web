@@ -30,9 +30,7 @@ export default function SignInScreen() {
      REDIRECT URI
   ====================== */
 
-  const redirectUri = makeRedirectUri({
-    useProxy: false,
-  });
+  const redirectUri =  window.location.origin + "/auth";
 
   /* ======================
      GOOGLE AUTH
