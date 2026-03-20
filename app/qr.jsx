@@ -13,16 +13,28 @@ export default function QRScreen() {
   const qrValue = `${API_URL}/countdown?target=2026-03-20T09:00:00`;
 
   const exportQR = () => {
-    qrRef.current.toDataURL((data) => {
-      const filePath = FileSystem.cacheDirectory + "qr.png";
+  qrRef.current.toDataURL((data) => {
 
-      FileSystem.writeAsStringAsync(filePath, data, {
-        encoding: FileSystem.EncodingType.Base64,
-      }).then(() => {
-        Sharing.shareAsync(filePath);
-      });
+    // 👉 WEB
+    if (Platform.OS === "web") {
+      const a = document.createElement("a");
+      a.href = "data:image/png;base64," + data;
+      a.download = "qr.png";
+      a.click();
+      return;
+    }
+
+    // 👉 MOBILE
+    const filePath = FileSystem.cacheDirectory + "qr.png";
+
+    FileSystem.writeAsStringAsync(filePath, data, {
+      encoding: FileSystem.EncodingType.Base64,
+    }).then(() => {
+      Sharing.shareAsync(filePath);
     });
-  };
+
+  });
+};
 
   return (
     <View
@@ -34,7 +46,7 @@ export default function QRScreen() {
       }}
     >
       <Text style={{ fontSize: 20, marginBottom: 20 }}>
-        QR mở TLH
+        QR TLH Academy
       </Text>
 
       <QRCode
@@ -52,7 +64,9 @@ export default function QRScreen() {
           borderRadius: 10,
         }}
       >
-        <Text style={{ fontWeight: "bold" }}>Xuất QR</Text>
+        <Text style={{ fontWeight: "bold" }}>
+  {Platform.OS === "web" ? "Tải QR" : "Xuất QR"}
+</Text>
       </TouchableOpacity>
     </View>
   );

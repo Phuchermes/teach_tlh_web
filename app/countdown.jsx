@@ -7,7 +7,7 @@ export default function CountdownScreen() {
   const params = useLocalSearchParams();
 
   const targetParam = params.target;
-  const redirect = "/(dashboard)/dashboard";
+  const redirect = "/gift";
 
   const [timeLeft, setTimeLeft] = useState(0);
 

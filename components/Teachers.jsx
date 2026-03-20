@@ -8,9 +8,13 @@ const teachers = [
     name: "Ms Lan Hương",
     score: "TOEIC 990/990",
     info:
-      "- Cử nhân Sư phạm Anh - ĐH Sư phạm TP.HCM\n- Thạc sĩ Ngôn ngữ Anh - ĐH Công nghệ TP.HCM",
+      "⭐ Cử nhân Sư phạm Anh - ĐH Sư phạm TP.HCM\n⭐ Thạc sĩ Ngôn ngữ Anh - ĐH Công nghệ TP.HCM",
     exp:
-      "- Trên 5 năm kinh nghiệm luyện thi\n- 90% học sinh 8+, 9+\n- Học sinh dưới TB lên 6+, 7+\n- TOEIC cấp tốc 500+",
+      "⭐ Trên 5 năm kinh nghiệm luyện thi lớp 10, THPTQG với hơn 1000 học viên tín nhiệm.",
+    exp2:"⭐ Tác giả Biên soạn các bộ đề Thực chiến - Dự đoán độc quyền siêu sát với đề thi thực tế giúp 90% bạn đạt 8+, 9+ trong kì thi vào lớp 10 & THPTQG", 
+    exp3:"⭐ Giúp hơn 100 bạn mất gốc, dưới TB tiến bộ vượt bậc lên 6+, 7+",   
+    exp4:"⭐ 95% học viên TOEIC đạt 700+; Ôn cấp tốc TOEIC từ 2- 3 tháng từ 0 - 500 giúp nhiều học viên đủ điều kiện tốt nghiệp ĐH và làm việc trong ngành hàng không",   
+    exp5:"⭐ Được vinh danh Giáo viên thực tập XUẤT SẮC - Kì thực tập sư phạm TP.HCM 2020",
     slogan:
       "TÂM Ở ĐÂU - TẦM Ở ĐÓ\nDạy bằng tất cả sự trân trọng",
   },
@@ -60,7 +64,7 @@ export default Teachers;
 
 /* ====================== */
 
-function TeacherCard({ name, score, info, exp, slogan, isMobile }) {
+function TeacherCard({ name, score, info, exp, exp2, exp3, exp4, exp5,  slogan, isMobile }) {
   return (
     <ThemedView
       style={{
@@ -75,14 +79,24 @@ function TeacherCard({ name, score, info, exp, slogan, isMobile }) {
         elevation: 5,
       }}
     >
-      <Image
-        source={require("../img/class/IMG_3848.jpg")}
-        style={{
-          width: 120,
-          height: 120,
-          borderRadius: 60,
-        }}
-      />
+<ThemedView
+  style={{
+    width: isMobile ? 160 : 220,   // 👈 to lên
+    height: isMobile ? 160 : 220,  // 👈 vuông
+    borderRadius: 999,             // 👈 tròn hoàn toàn
+    overflow: "hidden",            // 👈 cắt phần dư
+  }}
+>
+  <Image
+    source={require("../img/class/4B4A2420.jpg")}
+    style={{
+      width: "100%",
+      height: isMobile ? 260 : 320, // 👈 ảnh CAO hơn khung
+      transform: [{ translateY: 0 }], // 👈 kéo ảnh lên (giữ đầu)
+    }}
+    resizeMode="cover"
+  />
+</ThemedView>
 
       <ThemedView style={{ height: 10 }} />
 
@@ -100,15 +114,31 @@ function TeacherCard({ name, score, info, exp, slogan, isMobile }) {
         {score}
       </ThemedText>
 
-      <ThemedText style={{ marginTop: 10, textAlign: "center" }}>
+      <ThemedText style={{ marginTop: 10, textAlign: "center", fontSize:20 }}>
         {info}
       </ThemedText>
 
-      <ThemedText style={{ marginTop: 6, textAlign: "center" }}>
+      <ThemedText style={{ marginTop: 6, textAlign: "center", fontSize:15 }}>
         {exp}
       </ThemedText>
+      
+      <ThemedText style={{ marginTop: 6, textAlign: "center", fontSize:15 }}>
+        {exp2}
+      </ThemedText>
 
-      <ThemedText style={{ marginTop: 12, fontStyle: "italic", textAlign: "center" }}>
+      <ThemedText style={{ marginTop: 6, textAlign: "center", fontSize:15 }}>
+        {exp3}
+      </ThemedText>
+
+      <ThemedText style={{ marginTop: 6, textAlign: "center", fontSize:15 }}>
+        {exp4}
+      </ThemedText>
+
+      <ThemedText style={{ marginTop: 6, textAlign: "center", fontSize:15 }}>
+        {exp5}
+      </ThemedText>
+
+      <ThemedText style={{ marginTop: 12, fontStyle: "italic", textAlign: "center", fontSize:25 }}>
         {slogan}
       </ThemedText>
     </ThemedView>

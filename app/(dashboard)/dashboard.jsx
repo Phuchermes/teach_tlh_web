@@ -59,7 +59,7 @@ export default function LandingPage() {
 
         <Hero />
         <TrustBar />
-        <Stats />
+        {/* <Stats /> */}
 
         {/* COURSES */}
         <View

@@ -27,7 +27,7 @@ const Footer = forwardRef((props, ref) => {
         }}
       >
         {/* BRAND */}
-        <ThemedView style={{ maxWidth: 260 }}>
+        <ThemedView style={{ maxWidth: 300 }}>
           <ThemedText
             style={{
               fontSize: 20,

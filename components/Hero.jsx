@@ -64,7 +64,18 @@ export default function Hero() {
               textAlign: isMobile ? "center" : "left",
             }}
           >
-             Cam kết chương trình học ĐÚNG TRỌNG TÂM - LUÔN ĐỔI MỚI - VỮNG ĐẦU RA
+             Cam kết chương trình học
+          </ThemedText>
+
+          <ThemedText
+            style={{
+              marginTop: 20,
+              fontSize: isMobile ? 16 : 18,
+              opacity: 0.7,
+              textAlign: isMobile ? "center" : "left",
+            }}
+          >
+            ĐÚNG TRỌNG TÂM - LUÔN ĐỔI MỚI - VỮNG ĐẦU RA
           </ThemedText>
 
           <ThemedView style={{ height: 30 }} />
