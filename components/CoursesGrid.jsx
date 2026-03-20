@@ -1,4 +1,5 @@
 import { View, Image, useWindowDimensions } from "react-native";
+import { forwardRef } from "react";
 import ThemedView from "./ThemedView";
 import ThemedText from "./ThemedText";
 
@@ -13,7 +14,7 @@ const courses = [
   },
   {
     title: "Tiếng Anh THPT",
-    img: require("../img/class/IMG_3853.png"),
+    img: require("../img/class/IMG_3850.png"),
   },
   {
     title: "Luyện Thi Đại Học",
@@ -21,12 +22,15 @@ const courses = [
   },
 ];
 
-export default function CoursesGrid() {
+const CoursesGrid = forwardRef((props, ref) => {
   const { width } = useWindowDimensions();
   const isMobile = width < 768;
 
   return (
-    <ThemedView style={{ alignItems: "center", paddingVertical: 80 }}>
+    <ThemedView
+      ref={ref} // 🔥 QUAN TRỌNG
+      style={{ alignItems: "center", paddingVertical: 80 }}
+    >
       <ThemedText style={{ fontSize: 28, fontWeight: "bold" }}>
         Khóa học nổi bật
       </ThemedText>
@@ -46,7 +50,9 @@ export default function CoursesGrid() {
       </ThemedView>
     </ThemedView>
   );
-}
+});
+
+export default CoursesGrid;
 
 function CourseCard({ title, img, isMobile }) {
   return (

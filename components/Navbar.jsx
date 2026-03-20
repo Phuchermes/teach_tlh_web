@@ -6,7 +6,7 @@ import { useAuth } from "../contexts/AuthContext";
 import ThemedView from "./ThemedView";
 import ThemedText from "./ThemedText";
 
-export default function Navbar() {
+export default function Navbar({ onNavigate }) {
 
   const [menu, setMenu] = useState(false);
   const [open, setOpen] = useState(false);
@@ -54,10 +54,10 @@ export default function Navbar() {
           {/* DESKTOP MENU */}
           {!isMobile && (
             <ThemedView style={{ flexDirection: "row", gap: 24 }}>
-              <MenuItem title="Home" />
-              <MenuItem title="Courses" />
-              <MenuItem title="Teachers" />
-              <MenuItem title="Contact" />
+<MenuItem title="Home" onPress={() => onNavigate?.("home")} />
+<MenuItem title="Courses" onPress={() => onNavigate?.("courses")} />
+<MenuItem title="Teachers" onPress={() => onNavigate?.("teachers")} />
+<MenuItem title="Contact" onPress={() => onNavigate?.("contact")} />
             </ThemedView>
           )}
 
@@ -137,10 +137,10 @@ export default function Navbar() {
           }}
         >
 
-          <MenuItem title="Home" />
-          <MenuItem title="Courses" />
-          <MenuItem title="Teachers" />
-          <MenuItem title="Contact" />
+<MenuItem title="Home" onPress={() => { onNavigate?.("home"); setMenu(false); }} />
+<MenuItem title="Courses" onPress={() => { onNavigate?.("courses"); setMenu(false); }} />
+<MenuItem title="Teachers" onPress={() => { onNavigate?.("teachers"); setMenu(false); }} />
+<MenuItem title="Contact" onPress={() => { onNavigate?.("contact"); setMenu(false); }} />
 
           {!user && (
             <>
@@ -173,9 +173,9 @@ export default function Navbar() {
 MENU ITEM
 ====================== */
 
-function MenuItem({ title }) {
+function MenuItem({ title, onPress }) {
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onPress}>
       <ThemedText style={{ opacity: 0.8 }}>
         {title}
       </ThemedText>

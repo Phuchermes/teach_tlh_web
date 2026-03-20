@@ -1,4 +1,5 @@
 import { Image, useWindowDimensions } from "react-native";
+import { forwardRef } from "react";
 import ThemedView from "./ThemedView";
 import ThemedText from "./ThemedText";
 
@@ -15,12 +16,13 @@ const teachers = [
   },
 ];
 
-export default function Teachers() {
+const Teachers = forwardRef((props, ref) => {
   const { width } = useWindowDimensions();
   const isMobile = width < 768;
 
   return (
     <ThemedView
+      ref={ref} // 🔥 QUAN TRỌNG
       style={{
         width: "100%",
         alignItems: "center",
@@ -52,11 +54,11 @@ export default function Teachers() {
       </ThemedView>
     </ThemedView>
   );
-}
+});
 
-/* ======================
-TEACHER CARD
-====================== */
+export default Teachers;
+
+/* ====================== */
 
 function TeacherCard({ name, score, info, exp, slogan, isMobile }) {
   return (
@@ -67,8 +69,6 @@ function TeacherCard({ name, score, info, exp, slogan, isMobile }) {
         borderRadius: 20,
         alignItems: "center",
         gap: 10,
-
-        // 💥 thêm card style
         backgroundColor: "rgba(255,255,255,0.03)",
         shadowOpacity: 0.1,
         shadowRadius: 10,
@@ -86,12 +86,7 @@ function TeacherCard({ name, score, info, exp, slogan, isMobile }) {
 
       <ThemedView style={{ height: 10 }} />
 
-      <ThemedText
-        style={{
-          fontWeight: "bold",
-          fontSize: isMobile ? 20 : 25,
-        }}
-      >
+      <ThemedText style={{ fontWeight: "bold", fontSize: isMobile ? 20 : 25 }}>
         {name}
       </ThemedText>
 
@@ -105,42 +100,15 @@ function TeacherCard({ name, score, info, exp, slogan, isMobile }) {
         {score}
       </ThemedText>
 
-      {/* INFO */}
-      <ThemedText
-        style={{
-          marginTop: 10,
-          fontSize: isMobile ? 14 : 16,
-          opacity: 0.85,
-          textAlign: "center",
-          lineHeight: 22,
-        }}
-      >
+      <ThemedText style={{ marginTop: 10, textAlign: "center" }}>
         {info}
       </ThemedText>
 
-      {/* EXP */}
-      <ThemedText
-        style={{
-          marginTop: 6,
-          fontSize: isMobile ? 14 : 16,
-          opacity: 0.85,
-          textAlign: "center",
-          lineHeight: 22,
-        }}
-      >
+      <ThemedText style={{ marginTop: 6, textAlign: "center" }}>
         {exp}
       </ThemedText>
 
-      {/* SLOGAN */}
-      <ThemedText
-        style={{
-          marginTop: 12,
-          fontSize: isMobile ? 14 : 16,
-          fontStyle: "italic",
-          textAlign: "center",
-          opacity: 0.9,
-        }}
-      >
+      <ThemedText style={{ marginTop: 12, fontStyle: "italic", textAlign: "center" }}>
         {slogan}
       </ThemedText>
     </ThemedView>

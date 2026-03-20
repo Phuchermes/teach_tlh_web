@@ -1,4 +1,6 @@
-import { ScrollView } from "react-native";
+import { useRef, useState } from "react";
+import { ScrollView, View } from "react-native";
+
 import ThemedView from "../../components/ThemedView";
 import TrustBar from "../../components/TrustBar";
 import Navbar from "../../components/Navbar";
@@ -13,44 +15,96 @@ import CTA from "../../components/CTA";
 import Footer from "../../components/Footer";
 import Achievements from "../../components/Achievements";
 
-export default function LandingPage(){
+export default function LandingPage() {
 
-return(
+  const scrollRef = useRef(null);
 
-<ThemedView style={{flex:1}}>
+  // 🔥 lưu vị trí thật
+  const [positions, setPositions] = useState({
+    courses: 0,
+    teachers: 0,
+    contact: 0,
+  });
 
-<Navbar/>
+  const scrollTo = (key) => {
+    if (!scrollRef.current) return;
 
-<ScrollView
-showsVerticalScrollIndicator={false}
->
+    scrollRef.current.scrollTo({
+      y: positions[key] - 80,
+      animated: true,
+    });
+  };
 
-<Hero/>
+  return (
+    <ThemedView style={{ flex: 1 }}>
 
-<TrustBar/>
+      {/* NAVBAR */}
+      <Navbar
+        onNavigate={(section) => {
+          if (section === "home") {
+            scrollRef.current?.scrollTo({ y: 0, animated: true });
+          }
+          if (section === "courses") scrollTo("courses");
+          if (section === "teachers") scrollTo("teachers");
+          if (section === "contact") scrollTo("contact");
+        }}
+      />
 
-<Stats/>
+      {/* CONTENT */}
+      <ScrollView
+        ref={scrollRef}
+        showsVerticalScrollIndicator={false}
+        scrollEventThrottle={16}
+      >
 
-<CoursesGrid/>
+        <Hero />
+        <TrustBar />
+        <Stats />
 
-<Teachers/>
+        {/* COURSES */}
+        <View
+          onLayout={(e) =>
+            setPositions((prev) => ({
+              ...prev,
+              courses: e.nativeEvent.layout.y,
+            }))
+          }
+        >
+          <CoursesGrid />
+        </View>
 
-<Achievements/>
+        {/* TEACHERS */}
+        <View
+          onLayout={(e) =>
+            setPositions((prev) => ({
+              ...prev,
+              teachers: e.nativeEvent.layout.y,
+            }))
+          }
+        >
+          <Teachers />
+        </View>
 
-<MethodTimeline/>
+        <Achievements />
+        <MethodTimeline />
+        <Testimonials />
+        <FAQ />
+        <CTA />
 
-<Testimonials/>
+        {/* CONTACT */}
+        <View
+          onLayout={(e) =>
+            setPositions((prev) => ({
+              ...prev,
+              contact: e.nativeEvent.layout.y,
+            }))
+          }
+        >
+          <Footer />
+        </View>
 
-<FAQ/>
+      </ScrollView>
 
-<CTA/>
-
-<Footer/>
-
-</ScrollView>
-
-</ThemedView>
-
-)
-
+    </ThemedView>
+  );
 }

@@ -1,13 +1,15 @@
 import { View, useWindowDimensions } from "react-native";
+import { forwardRef } from "react";
 import ThemedView from "./ThemedView";
 import ThemedText from "./ThemedText";
 
-export default function Footer() {
+const Footer = forwardRef((props, ref) => {
   const { width } = useWindowDimensions();
   const isMobile = width < 768;
 
   return (
     <ThemedView
+      ref={ref} // 🔥 QUAN TRỌNG
       style={{
         width: "100%",
         alignItems: "center",
@@ -41,9 +43,9 @@ export default function Footer() {
             TEACH WITH CARE - LEARN WITH MIND
           </ThemedText>
 
-            <ThemedText>
-                Chúng tôi giúp học sinh đạt mục tiêu học tập.
-            </ThemedText>
+          <ThemedText>
+            Chúng tôi giúp học sinh đạt mục tiêu học tập.
+          </ThemedText>
         </ThemedView>
 
         {/* COURSES */}
@@ -55,18 +57,7 @@ export default function Footer() {
           <FooterLink text="LUYỆN THI THPTQG - TUYỂN SINH 10 " />
           <FooterLink text="LUYỆN THI CHỨNG CHỈ TOEIC - CAMBRIDGE " />
           <FooterLink text="TIẾNG ANH PHỔ THÔNG 6 - 12" />
-            <FooterLink text="TIẾNG ANH GIAO TIẾP" />
-        </ThemedView>
-
-        {/* COMPANY */}
-        <ThemedView>
-          <ThemedText style={{ fontWeight: "bold", marginBottom: 10 }}>
-            Academy
-          </ThemedText>
-
-          <FooterLink text="About" />
-          <FooterLink text="Teachers" />
-          <FooterLink text="Contact" />
+          <FooterLink text="TIẾNG ANH GIAO TIẾP" />
         </ThemedView>
 
         {/* CONTACT */}
@@ -88,16 +79,13 @@ export default function Footer() {
       </ThemedView>
     </ThemedView>
   );
-}
+});
+
+export default Footer;
 
 function FooterLink({ text }) {
   return (
-    <ThemedText
-      style={{
-        opacity: 0.7,
-        marginBottom: 6,
-      }}
-    >
+    <ThemedText style={{ opacity: 0.7, marginBottom: 6 }}>
       {text}
     </ThemedText>
   );
