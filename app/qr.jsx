@@ -4,13 +4,13 @@ import { useRef } from "react";
 import * as FileSystem from "expo-file-system";
 import * as Sharing from "expo-sharing";
 
-import API_URL from "../config/api"; // 🔥 dùng chung
+import QR_URL from "../config/api"; // 🔥 dùng chung
 
 export default function QRScreen() {
   const qrRef = useRef();
 
   /* 🔥 DÙNG LINK BACKEND (QUAN TRỌNG) */
-  const qrValue = `${API_URL}/countdown?target=2026-03-28T09:00:00`;
+  const qrValue = `${QR_URL}/countdown?target=2026-03-28T09:00:00`;
 
   const exportQR = () => {
   qrRef.current.toDataURL((data) => {
