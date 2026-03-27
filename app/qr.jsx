@@ -10,7 +10,7 @@ export default function QRScreen() {
   const qrRef = useRef();
 
   /* 🔥 DÙNG LINK BACKEND (QUAN TRỌNG) */
-  const qrValue = `${API_URL}/countdown?target=2026-03-20T09:00:00`;
+  const qrValue = `${API_URL}/countdown?target=2026-03-28T09:00:00`;
 
   const exportQR = () => {
   qrRef.current.toDataURL((data) => {
