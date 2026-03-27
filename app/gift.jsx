@@ -10,7 +10,7 @@ export default function RegisterGift() {
   const isMobile = width < 768;
 
   const openFanpage = () => {
-    Linking.openURL("https://www.facebook.com/TLHACADEMYGOVAP145"); // thay link page
+    Linking.openURL("https://www.facebook.com/share/1Cpzk4pFVn/"); // thay link page
   };
 
   return (
